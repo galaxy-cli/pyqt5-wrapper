@@ -16,7 +16,7 @@ def run_auto_installer():
         {"module": "PyQt5", "pip": "PyQt5", "apt": "python3-pyqt5"},
         {"module": "PyQt5.QtWebEngineWidgets", "pip": "PyQt5-QtWebEngine", "apt": "python3-pyqt5.qtwebengine"}
     ]
-    
+
     missing_apt_packages = []
     missing_pip_packages = []
 
@@ -33,7 +33,7 @@ def run_auto_installer():
         return
 
     print("[*] Missing dependencies found. Starting setup...")
-    
+
     try:
         # 1. Run all APT installations in a single batch
         if missing_apt_packages:
@@ -47,7 +47,7 @@ def run_auto_installer():
                 print(f"[*] Pip installing fallback: {req['pip']}")
                 subprocess.check_call([sys.executable, "-m", "pip", "install", 
                                       req["pip"], "--break-system-packages"])
-                
+
     except KeyboardInterrupt:
         print("\n[!] Setup cancelled by user (Ctrl+C). Exiting.")
         sys.exit(1)
@@ -80,7 +80,7 @@ class ProBrowser(QMainWindow):
         super().__init__()
         self.setWindowTitle("Pro Browser")
         self.resize(1200, 800)
-        
+
         self.home_url = "https://duckduckgo.com"
         self.interceptor = AdBlocker()
 
@@ -183,7 +183,7 @@ class ProBrowser(QMainWindow):
             self.url_bar.setText(browser.url().toString())
             self.setWindowTitle(f"{browser.title()} - Pro Browser")
 
-    def go_home(self): 
+    def go_home(self):
         if self.current_browser():
             self.current_browser().setUrl(QUrl(self.home_url))
 
@@ -191,7 +191,7 @@ class ProBrowser(QMainWindow):
         text = self.url_bar.text().strip()
         if not text or not self.current_browser():
             return
-        
+
         if text.startswith("/") or text.startswith("localhost") or text.startswith("127.0.0.1"):
             url = f"http://{text}" if not text.startswith("/") else f"file://{text}"
         elif "." not in text or " " in text:
@@ -222,7 +222,7 @@ class ProBrowser(QMainWindow):
 if __name__ == "__main__":
     # Ensures Python handles Ctrl+C cleanly while the GUI app is running
     signal.signal(signal.SIGINT, signal.SIG_DFL)
-    
+
     app = QApplication(sys.argv)
     window = ProBrowser()
     window.show()
